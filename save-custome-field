@@ -1,0 +1,46 @@
+$email_to_add = 'audhesh.lal@laitkor.com'; // New contact's email address
+
+$first_name_to_add = 'joney'; // New contact's firts name
+
+$last_name_to_add = 'Noel'; // New contact's last name
+
+$company_name = 'NewGen'; // New company's name 
+
+
+$request = '<?xml version="1.0" encoding="utf-8"?>
+<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+  <soap12:Body>
+    <SetCompany xmlns="http://schema.veetro.com">
+      <company>
+      <CustomerCredentials>None</CustomerCredentials>
+      <EntityID>0</EntityID>
+      <DirectoryLetter>L</DirectoryLetter>
+      <Name>'.$company_name.'</Name>
+      <Flags>Company</Flags>
+      <Delete>false</Delete>
+      <RemoveParentLinks>false</RemoveParentLinks>
+      <OwnerID>0</OwnerID>
+      <CustomFields>
+  	<Field>
+		   <FieldID>10</FieldID>
+		   <Name>inquiry</Name>
+		   <Question>inquiry</Question>
+		   <Value>general</Value>
+		</Field>
+		<Field>
+		   <FieldID>9</FieldID>
+		   <Name>comments</Name>
+		   <Question>comments</Question>
+		   <Value>Test comment company</Value>
+		</Field>
+     </CustomFields>
+     </company>
+   </SetCompany>
+  </soap12:Body>
+</soap12:Envelope>
+';
+
+//$result =$n1->__doRequest ($request,'http://laitkortest.worketc.com/xml?wsdl' , 'FindCompanies','');
+$resultcompany = $n1->__doRequest($request, "http://laitkortest.worketc.com/xml?wsdl", "http://laitkortest.worketc.com/xml?op=SetCompany",2,0);
+$ob1=simplexml_load_string(str_ireplace("soap:", "", $resultcompany));
+$companyid=$ob1->Body->SetCompanyResponse->SetCompanyResult->EntityID;
